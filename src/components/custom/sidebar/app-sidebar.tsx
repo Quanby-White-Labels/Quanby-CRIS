@@ -104,7 +104,7 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
             <SidebarMenuButton size="lg" asChild>
               <Link href="/dashboard" className="flex items-center gap-3">
                 <Image
-                  src="/images/new.png"
+                  src="/images/quanby.png"
                   alt="Logo"
                   width={45}
                   height={45}
@@ -113,7 +113,7 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
                 />
                 <div className="flex-1 overflow-hidden">
                   <span className="block font-semibold text-muted-foreground leading-normal break-words max-h-16 overflow-auto">
-                    Legazpi City Civil Registry
+                    Quanby CHRIS
                   </span>
                 </div>
               </Link>

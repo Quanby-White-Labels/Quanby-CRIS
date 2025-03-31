@@ -992,7 +992,7 @@ const generateDeathCertificate = (
               'RN',
               'Attending Physician',
             ]),
-            address: generatePhLocation(),
+            address: faker.location.streetAddress(),
             date: deathDate,
           },
         },

@@ -24,10 +24,10 @@ const Login = () => {
 
   return (
     <div className="w-full h-screen font-manrope relative">
-      {/* Development Mode Indicator */}
+      {/*  Indicator */}
       {isDevelopment && (
         <div className="absolute top-0 left-0 bg-red-600 text-white text-xs px-4 py-1 rounded-br-lg shadow-md z-50">
-          Development Mode
+          
         </div>
       )}
 
@@ -49,27 +49,27 @@ const Login = () => {
                   >
                     <CardHeader className="w-full text-left md:flex-row flex-col gap-2 space-y-1 flex items-center md:justify-start justify-center">
                       <Image
-                        src="/images/new.png"
+                        src="/images/quanby.png"
                         alt="New Image"
                         width={96}
                         height={96}
                         className="w-24 h-24"
                         loading="eager"
                       />
-                      <Image
+                      {/* <Image
                         src="/images/logo.png"
                         alt="Logo"
                         width={96}
                         height={96}
                         className="w-24 h-24 rounded-full"
                         loading="eager"
-                      />
+                      /> */}
                       <div className="pl-2">
                         <CardTitle className="text-xl w-full font-bold font-inter tracking-tight uppercase">
-                          City Government of Legazpi
+                          Quanby
                         </CardTitle>
                         <CardDescription>
-                          Office of the City Civil Registrar
+                          CRIS
                         </CardDescription>
                       </div>
                     </CardHeader>
