@@ -87,6 +87,12 @@ export async function updateMarriageCertificateForm(
                 husbandMotherMaidenName: data.husbandParents?.motherName,
                 husbandMotherCitizenship: data.husbandParents?.motherCitizenship,
                 husbandConsentPerson: {
+                    name: {
+                        first: data.husbandConsentPerson?.name?.first,
+                        middle: data.husbandConsentPerson?.name?.middle,
+                        last: data.husbandConsentPerson?.name?.last
+                    },
+                    relationship: data.husbandConsentPerson?.relationship,
                     residence: {
                         barangay: data.husbandConsentPerson?.residence?.barangay,
                         houseNo: data.husbandConsentPerson?.residence?.houseNo,
@@ -123,6 +129,12 @@ export async function updateMarriageCertificateForm(
                 wifeMotherMaidenName: data.wifeParents?.motherName,
                 wifeMotherCitizenship: data.wifeParents?.motherCitizenship,
                 wifeConsentPerson: {
+                    name: {
+                        first: data.wifeConsentPerson?.name?.first,
+                        middle: data.wifeConsentPerson?.name?.middle,
+                        last: data.wifeConsentPerson?.name?.last
+                    },
+                    relationship: data.wifeConsentPerson?.relationship,
                     residence: {
                         barangay: data.wifeConsentPerson?.residence?.barangay,
                         houseNo: data.wifeConsentPerson?.residence?.houseNo,

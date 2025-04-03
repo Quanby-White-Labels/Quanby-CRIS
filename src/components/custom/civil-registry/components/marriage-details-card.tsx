@@ -19,26 +19,10 @@ interface ContractingPartiesSignature {
 }
 
 /**
- * Type guard for ContractingPartiesSignature.
- */
-function isContractingPartiesSignature(
-  value: unknown
-): value is ContractingPartiesSignature {
-  return (
-    typeof value === "object" &&
-    value !== null &&
-    "husband" in value &&
-    typeof (value as Record<string, unknown>).husband === "string" &&
-    "wife" in value &&
-    typeof (value as Record<string, unknown>).wife === "string"
-  );
-}
-
-/**
  * Interface for Marriage License Details.
  */
 interface MarriageLicenseDetails {
-  number: string;
+  licenseNumber: string;
   dateIssued: string | Date;
   placeIssued: unknown; // adjust this type based on your location data
 }
@@ -52,8 +36,8 @@ function isMarriageLicenseDetails(
   return (
     typeof value === "object" &&
     value !== null &&
-    "number" in value &&
-    typeof (value as Record<string, unknown>).number === "string" &&
+    "licenseNumber" in value &&
+    typeof (value as Record<string, unknown>).licenseNumber === "string" &&
     "dateIssued" in value &&
     (typeof (value as Record<string, unknown>).dateIssued === "string" ||
       (value as Record<string, unknown>).dateIssued instanceof Date) &&
@@ -67,8 +51,7 @@ function isMarriageLicenseDetails(
 interface SolemnizingOfficer {
   name: string;
   position: string;
-  religion: string;
-  registryNoExpiryDate: string | Date;
+  registryNoExpiryDate: string;
 }
 
 /**
@@ -82,8 +65,6 @@ function isSolemnizingOfficer(value: unknown): value is SolemnizingOfficer {
     typeof (value as Record<string, unknown>).name === "string" &&
     "position" in value &&
     typeof (value as Record<string, unknown>).position === "string" &&
-    "religion" in value &&
-    typeof (value as Record<string, unknown>).religion === "string" &&
     "registryNoExpiryDate" in value &&
     (typeof (value as Record<string, unknown>).registryNoExpiryDate ===
       "string" ||
@@ -145,10 +126,6 @@ export const MarriageDetailsCard: React.FC<MarriageDetailsCardProps> = ({
               <div>{formatLocation(m.husbandPlaceOfBirth)}</div>
             </div>
             <div>
-              <p className="font-medium">{t("Residence")}</p>
-              <div>{formatLocation(m.husbandResidence)}</div>
-            </div>
-            <div>
               <p className="font-medium">{t("Religion")}</p>
               <div>{m.husbandReligion}</div>
             </div>
@@ -196,10 +173,6 @@ export const MarriageDetailsCard: React.FC<MarriageDetailsCardProps> = ({
               <div>{formatLocation(m.wifePlaceOfBirth)}</div>
             </div>
             <div>
-              <p className="font-medium">{t("Residence")}</p>
-              <div>{formatLocation(m.wifeResidence)}</div>
-            </div>
-            <div>
               <p className="font-medium">{t("Religion")}</p>
               <div>{m.wifeReligion}</div>
             </div>
@@ -234,8 +207,16 @@ export const MarriageDetailsCard: React.FC<MarriageDetailsCardProps> = ({
             </div>
             <div>
               <p className="font-medium">{t("Time of Marriage")}</p>
-              <div>{m.timeOfMarriage?.toString() || ""}</div>
+              <div>
+                {m.timeOfMarriage
+                  ? new Date(m.timeOfMarriage).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })
+                  : ""}
+              </div>
             </div>
+
             <div>
               <p className="font-medium">{t("Marriage Settlement")}</p>
               <div>{m.marriageSettlement ? t("Yes") : t("No")}</div>
@@ -253,7 +234,7 @@ export const MarriageDetailsCard: React.FC<MarriageDetailsCardProps> = ({
               <p className="font-medium">{t("Marriage License Details")}</p>
               <div>
                 <strong>{t("Number")}:</strong>{" "}
-                {marriageLicenseDetails?.number || ""}
+                {marriageLicenseDetails?.licenseNumber || ""}
                 <br />
                 <strong>{t("Date Issued")}:</strong>{" "}
                 {formatDate(marriageLicenseDetails?.dateIssued ?? undefined)}
@@ -270,13 +251,9 @@ export const MarriageDetailsCard: React.FC<MarriageDetailsCardProps> = ({
                 <strong>{t("Position")}:</strong>{" "}
                 {solemnizingOfficer?.position || ""}
                 <br />
-                <strong>{t("Religion")}:</strong>{" "}
-                {solemnizingOfficer?.religion || ""}
+                <strong>{t("Registry No. Expiry Date")}:</strong>{" "}
+                {solemnizingOfficer?.registryNoExpiryDate || ""}
                 <br />
-                <strong>{t("Registry No Expiry")}:</strong>{" "}
-                {formatDate(
-                  solemnizingOfficer?.registryNoExpiryDate ?? undefined
-                )}
               </div>
             </div>
           </div>

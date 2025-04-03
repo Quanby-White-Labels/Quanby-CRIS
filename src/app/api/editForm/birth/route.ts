@@ -27,11 +27,13 @@ export async function PUT(request: Request) {
       pageNumber,
       bookNumber,
       remarks,
-      preparedBy,         // from client; we will map this to JSON for 'preparer'
+      preparedBy,
       preparedByDate,
       receivedBy,
+      receivedByPosition,       // <-- Added
       receivedByDate,
       registeredBy,
+      registeredByPosition,     // <-- Added
       registeredByDate,
       childInfo,
       motherInfo,
@@ -98,9 +100,11 @@ export async function PUT(request: Request) {
         bookNumber,
         remarks,
         preparedByDate: preparedByDate ? new Date(preparedByDate) : null,
-        receivedBy: safeReceivedBy,
+        receivedBy: receivedBy || "",
+        receivedByPosition: receivedByPosition || "", // <-- Added
         receivedByDate: receivedByDate ? new Date(receivedByDate) : null,
-        registeredBy: safeRegisteredBy,
+        registeredBy: registeredBy || "",
+        registeredByPosition: registeredByPosition || "", // <-- Added
         registeredByDate: registeredByDate ? new Date(registeredByDate) : null,
         updatedAt: new Date(),
         birthCertificateForm: {

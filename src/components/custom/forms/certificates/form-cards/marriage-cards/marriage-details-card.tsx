@@ -139,7 +139,7 @@ const MarriageDetailsCard: React.FC = () => {
             </div>
           ) : (
             /* Location Selector */
-            <PlaceOfMarriageCard  />
+            <PlaceOfMarriageCard />
           )}
 
           {/* Date of Marriage */}

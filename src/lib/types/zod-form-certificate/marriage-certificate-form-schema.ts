@@ -27,7 +27,7 @@ const locationSchema = z.object({
 
 
 const residenceSchemas = z.object({
-  
+
   st: z.string().optional(),
   barangay: z.string().optional(),
   cityMunicipality: z.string().optional(), // Reuse shared city/municipality schema
@@ -285,25 +285,7 @@ export const marriageCertificateSchema = z.object({
     ...locationSchema.shape
   }),
   dateOfMarriage: z.date().optional(),
-  timeOfMarriage: z.preprocess((val) => {
-    if (val instanceof Date) {
-      // If it's already a Date object, return it directly
-      return val
-    }
-
-    if (typeof val === 'string' && val.trim() !== '') {
-      const [hours, minutes] = val.split(':')
-      const date = new Date() // Use current date
-      date.setHours(Number(hours), Number(minutes), 0, 0)
-      return date
-    }
-
-    // If no valid input, return current timestamp
-    return new Date()
-  }, createDateFieldSchema({
-    requiredError: 'Start date is required',
-    futureError: 'Start date cannot be in the future',
-  }),),
+  timeOfMarriage: z.date().optional(),
 
   // Witnesses
   husbandWitnesses: z.array(z.object({

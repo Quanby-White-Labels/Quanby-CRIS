@@ -352,7 +352,7 @@ export const mapToMarriageCertificateValues = (
         registeredByOffice: {
             // signature: ensureString(marriageForm.registeredByOffice?.signature),
             nameInPrint: ensureString(marriageForm.registeredByOffice?.nameInPrint),
-            titleOrPosition: ensureString(marriageForm.registeredByOffice?.title),
+            titleOrPosition: ensureString(marriageForm.registeredByOffice?.titleOrPosition),
             date: parseDateSafely(marriageForm.registeredByOffice?.date),
         },
 

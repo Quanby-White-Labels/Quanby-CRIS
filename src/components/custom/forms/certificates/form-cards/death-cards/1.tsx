@@ -562,14 +562,14 @@ const DeceasedInformationCard: React.FC = () => {
             {/* Name of Father */}
             <FormField
               control={control}
-              name="nameOfFather.first"
+              name="parents.fatherName.first"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>12. Name of Father (first)</FormLabel>
                   <FormControl>
                     <Input
                       className="h-10"
-                      placeholder="Enter occupation"
+                      placeholder="Enter father first name"
                       {...field}
                       value={field.value ?? ""}
                     />
@@ -580,14 +580,14 @@ const DeceasedInformationCard: React.FC = () => {
             />
             <FormField
               control={control}
-              name="nameOfFather.middle"
+              name="parents.fatherName.middle"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name of Father (middle)</FormLabel>
                   <FormControl>
                     <Input
                       className="h-10"
-                      placeholder="Enter occupation"
+                      placeholder="Enter father middle name"
                       {...field}
                       value={field.value ?? ""}
                     />
@@ -598,14 +598,14 @@ const DeceasedInformationCard: React.FC = () => {
             />
             <FormField
               control={control}
-              name="nameOfFather.last"
+              name="parents.fatherName.last"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name of Father (last)</FormLabel>
                   <FormControl>
                     <Input
                       className="h-10"
-                      placeholder="Enter occupation"
+                      placeholder="Enter father last name"
                       {...field}
                       value={field.value ?? ""}
                     />
@@ -618,14 +618,14 @@ const DeceasedInformationCard: React.FC = () => {
             {/* Maiden Name of Mother */}
             <FormField
               control={control}
-              name="nameOfMother.first"
+              name="parents.motherName.first"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>13. Maiden Name of Mother (first)</FormLabel>
                   <FormControl>
                     <Input
                       className="h-10"
-                      placeholder="Enter occupation"
+                      placeholder="Enter mother first name"
                       {...field}
                       value={field.value ?? ""}
                     />
@@ -636,14 +636,14 @@ const DeceasedInformationCard: React.FC = () => {
             />
             <FormField
               control={control}
-              name="nameOfMother.middle"
+              name="parents.motherName.middle"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Maiden Name of Mother (middle)</FormLabel>
                   <FormControl>
                     <Input
                       className="h-10"
-                      placeholder="Enter occupation"
+                      placeholder="Enter mother middle name"
                       {...field}
                       value={field.value ?? ""}
                     />
@@ -654,14 +654,14 @@ const DeceasedInformationCard: React.FC = () => {
             />
             <FormField
               control={control}
-              name="nameOfMother.last"
+              name="parents.motherName.last"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Maiden Name of Mother (last)</FormLabel>
                   <FormControl>
                     <Input
                       className="h-10"
-                      placeholder="Enter occupation"
+                      placeholder="Enter mother last name"
                       {...field}
                       value={field.value ?? ""}
                     />

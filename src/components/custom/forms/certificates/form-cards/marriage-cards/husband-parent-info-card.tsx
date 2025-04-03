@@ -301,7 +301,7 @@ const HusbandParentsInfoCard: React.FC = () => {
             )}
           />
 
-          <HusbandConsentPlace  />
+          <HusbandConsentPlace />
         </div>
       </CardContent>
     </Card>

@@ -123,7 +123,21 @@ export async function submitDeathCertificateForm(
             occupation: formData.occupation || '',
 
             // Parent Information.
-            parentInfo: formData.parents as Prisma.JsonObject,
+            parentInfo: formData.parents ?
+              {
+                ...formData.parents,
+                fatherName: {
+                  first: formData.parents.fatherName.first,
+                  middle: formData.parents.fatherName.middle,
+                  last: formData.parents.fatherName.last,
+                },
+                motherName: {
+                  first: formData.parents.motherName.first,
+                  middle: formData.parents.motherName.middle,
+                  last: formData.parents.motherName.last,
+                }
+              } as Prisma.JsonObject
+              : Prisma.JsonNull,
 
             // Birth Information (if applicable).
             birthInformation: formData.birthInformation

@@ -3,7 +3,6 @@ import {
   DeathCertificateFormValues,
   deathCertificateFormSchema,
 } from '@/lib/types/zod-form-certificate/death-certificate-form-schema';
-import { fileToBase64 } from '@/lib/utils/fileToBase64';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Permission } from '@prisma/client';
 import { useEffect, useState } from 'react';
@@ -61,17 +60,6 @@ const emptyDefaults: DeathCertificateFormValues = {
     country: '',
   },
   occupation: '',
-  nameOfFather: {
-    first: '',
-    middle: '',
-    last: '',
-  },
-  nameOfMother: {
-    first: '',
-    middle: '',
-    last: '',
-  },
-
   birthInformation: {
     ageOfMother: undefined,
     methodOfDelivery: undefined,

@@ -121,28 +121,39 @@ export function EditBirthCivilRegistryFormInline({
     return rawResidence;
   };
 
-  // Helper to conditionally merge original and updated residence objects.
-  const mergeResidence = (
-    original: Record<string, string>,
-    updated: Record<string, string>
-  ): Record<string, string> => {
-    return {
-      houseNo: updated.houseNo?.trim() ? updated.houseNo : original.houseNo,
-      // For the street field, try both "st" and "street"
-      street:
-        updated.st?.trim() ||
-        updated.street?.trim() ||
-        original.street ||
-        original.st ||
-        '',
-      barangay: updated.barangay?.trim() ? updated.barangay : original.barangay,
-      cityMunicipality: updated.cityMunicipality?.trim()
-        ? updated.cityMunicipality
-        : original.cityMunicipality,
-      province: updated.province?.trim() ? updated.province : original.province,
-      country: updated.country?.trim() ? updated.country : original.country,
-    };
+// Helper to conditionally merge original and updated residence objects.
+const mergeResidence = (
+  original: Record<string, string>,
+  updated: Record<string, string> = {},
+  streetField: 'street' | 'st' = 'st'
+): Record<string, string> => {
+  let mergedStreet = '';
+  if (streetField === 'street') {
+    // For addresses that may have either a "st" or "street" field.
+    mergedStreet =
+      updated.st?.trim() ||
+      updated.street?.trim() ||
+      original.street ||
+      original.st ||
+      '';
+  } else {
+    // For addresses that only use "st"
+    mergedStreet = updated.st?.trim() || original.st || '';
+  }
+
+  return {
+    houseNo: updated.houseNo?.trim() ? updated.houseNo : original.houseNo,
+    [streetField]: mergedStreet,
+    barangay: updated.barangay?.trim() ? updated.barangay : original.barangay,
+    cityMunicipality: updated.cityMunicipality?.trim()
+      ? updated.cityMunicipality
+      : original.cityMunicipality,
+    province: updated.province?.trim() ? updated.province : original.province,
+    country: updated.country?.trim() ? updated.country : original.country,
   };
+};
+
+  
 
   // Map the form data to the certificate values with proper type guarding.
   const mapToBirthCertificateValues = (
@@ -792,12 +803,12 @@ export function EditBirthCivilRegistryFormInline({
 
       receivedBy: {
         nameInPrint: typeof form.receivedBy === 'string' ? form.receivedBy : '',
-        titleOrPosition: 'SampleReceivePosition',
+        titleOrPosition: typeof form.receivedByPosition === 'string' ? form.receivedByPosition : '',
         date: parseDateSafely(form.receivedByDate),
       },
       registeredByOffice: {
         nameInPrint: typeof form.registeredBy === 'string' ? form.registeredBy : '',
-        titleOrPosition: 'SampleRegisterPosition',
+        titleOrPosition: typeof form.registeredByPosition === 'string' ? form.registeredByPosition : '',
         date: parseDateSafely(form.registeredByDate),
       },
 
@@ -836,98 +847,94 @@ export function EditBirthCivilRegistryFormInline({
 
   const handleEditSubmit = async (data: BirthCertificateFormValues): Promise<void> => {
     setIsUpdating(true);
-
+  
     // Ensure we have valid object values for the residences
     const originalMotherResidence =
-      (typeof form.birthCertificateForm?.motherResidence === 'object' &&
-        form.birthCertificateForm?.motherResidence !== null &&
-        !Array.isArray(form.birthCertificateForm?.motherResidence))
-        ? form.birthCertificateForm?.motherResidence as Record<string, string>
+      typeof form.birthCertificateForm?.motherResidence === 'object' &&
+      form.birthCertificateForm?.motherResidence !== null &&
+      !Array.isArray(form.birthCertificateForm?.motherResidence)
+        ? (form.birthCertificateForm?.motherResidence as Record<string, string>)
         : {};
-
+  
     const originalFatherResidence =
-      (typeof form.birthCertificateForm?.fatherResidence === 'object' &&
-        form.birthCertificateForm?.fatherResidence !== null &&
-        !Array.isArray(form.birthCertificateForm?.fatherResidence))
-        ? form.birthCertificateForm?.fatherResidence as Record<string, string>
+      typeof form.birthCertificateForm?.fatherResidence === 'object' &&
+      form.birthCertificateForm?.fatherResidence !== null &&
+      !Array.isArray(form.birthCertificateForm?.fatherResidence)
+        ? (form.birthCertificateForm?.fatherResidence as Record<string, string>)
         : {};
-        const originalParentMarriage = (() => {
-          const pm = form.birthCertificateForm?.parentMarriage;
-          if (
-            typeof pm === 'object' &&
-            pm !== null &&
-            !Array.isArray(pm) &&
-            'place' in pm &&
-            typeof pm.place === 'object' &&
-            pm.place !== null &&
-            !Array.isArray(pm.place)
-          ) {
-            return pm.place as Record<string, string>;
-          }
-          return {};
-        }
-        
-      )();
-        
-      const originalAttendantAddress = (() => {
-        const att = form.birthCertificateForm?.attendant;
-        if (
-          typeof att === 'object' &&
-          att !== null &&
-          !Array.isArray(att) &&
-          'certification' in att &&
-          typeof att.certification === 'object' &&
-          att.certification !== null &&
-          !Array.isArray(att.certification) &&
-          'address' in att.certification &&
-          typeof att.certification.address === 'object' &&
-          att.certification.address !== null &&
-          !Array.isArray(att.certification.address)
-        ) {
-          return att.certification.address as Record<string, string>;
-        }
-        return {};
-      })();
-      
-      const originalInformantAddress = (() => {
-        const inf = form.birthCertificateForm?.informant;
-        if (
-          typeof inf === 'object' &&
-          inf !== null &&
-          !Array.isArray(inf) &&
-          'address' in inf &&
-          typeof inf.address === 'object' &&
-          inf.address !== null &&
-          !Array.isArray(inf.address)
-        ) {
-          return inf.address as Record<string, string>;
-        }
-        return {};
-      })();
-
-
-      const originalAdminOfficerAddress = (() => {
-        const details = form.birthCertificateForm?.affidavitOfPaternityDetails;
-        if (
-          typeof details === 'object' &&
-          details !== null &&
-          !Array.isArray(details) &&
-          'adminOfficer' in details &&
-          typeof details.adminOfficer === 'object' &&
-          details.adminOfficer !== null &&
-          !Array.isArray(details.adminOfficer) &&
-          'address' in details.adminOfficer &&
-          typeof details.adminOfficer.address === 'object' &&
-          details.adminOfficer.address !== null &&
-          !Array.isArray(details.adminOfficer.address)
-        ) {
-          return details.adminOfficer.address as Record<string, string>;
-        }
-        return {};
-      })();
-      
-      
-
+  
+    const originalParentMarriage = (() => {
+      const pm = form.birthCertificateForm?.parentMarriage;
+      if (
+        typeof pm === 'object' &&
+        pm !== null &&
+        !Array.isArray(pm) &&
+        'place' in pm &&
+        typeof pm.place === 'object' &&
+        pm.place !== null &&
+        !Array.isArray(pm.place)
+      ) {
+        return pm.place as Record<string, string>;
+      }
+      return {};
+    })();
+  
+    const originalAttendantAddress = (() => {
+      const att = form.birthCertificateForm?.attendant;
+      if (
+        typeof att === 'object' &&
+        att !== null &&
+        !Array.isArray(att) &&
+        'certification' in att &&
+        typeof att.certification === 'object' &&
+        att.certification !== null &&
+        !Array.isArray(att.certification) &&
+        'address' in att.certification &&
+        typeof att.certification.address === 'object' &&
+        att.certification.address !== null &&
+        !Array.isArray(att.certification.address)
+      ) {
+        return att.certification.address as Record<string, string>;
+      }
+      return {};
+    })();
+  
+    const originalInformantAddress = (() => {
+      const inf = form.birthCertificateForm?.informant;
+      if (
+        typeof inf === 'object' &&
+        inf !== null &&
+        !Array.isArray(inf) &&
+        'address' in inf &&
+        typeof inf.address === 'object' &&
+        inf.address !== null &&
+        !Array.isArray(inf.address)
+      ) {
+        return inf.address as Record<string, string>;
+      }
+      return {};
+    })();
+  
+    const originalAdminOfficerAddress = (() => {
+      const details = form.birthCertificateForm?.affidavitOfPaternityDetails;
+      if (
+        typeof details === 'object' &&
+        details !== null &&
+        !Array.isArray(details) &&
+        'adminOfficer' in details &&
+        typeof details.adminOfficer === 'object' &&
+        details.adminOfficer !== null &&
+        !Array.isArray(details.adminOfficer) &&
+        'address' in details.adminOfficer &&
+        typeof details.adminOfficer.address === 'object' &&
+        details.adminOfficer.address !== null &&
+        !Array.isArray(details.adminOfficer.address)
+      ) {
+        return details.adminOfficer.address as Record<string, string>;
+      }
+      return {};
+    })();
+  
     const updatedForm = {
       id: form.id,
       registryNumber: data.registryNumber,
@@ -938,8 +945,10 @@ export function EditBirthCivilRegistryFormInline({
       remarks: data.remarks || null,
       preparedByDate: data.preparedBy.date || null,
       receivedBy: data.receivedBy.nameInPrint || null,
+      receivedByPosition: data.receivedBy.titleOrPosition || null,  // <-- Added
       receivedByDate: data.receivedBy.date || null,
       registeredBy: data.registeredByOffice.nameInPrint || null,
+      registeredByPosition: data.registeredByOffice.titleOrPosition || null,  // <-- Added
       registeredByDate: data.registeredByOffice.date || null,
       updatedAt: new Date(),
       childInfo: {
@@ -1000,25 +1009,23 @@ export function EditBirthCivilRegistryFormInline({
           date: data.attendant.certification.date,
           address: mergeResidence(
             originalAttendantAddress,
-            data.attendant.certification?.address as Record<string, string>
+            data.attendant.certification?.address as Record<string, string>,
+            'st'
           ),
         }
       },
-
-      informant:{
+      informant: {
         name: data.informant.name,
         relationship: data.informant.relationship,
         address: mergeResidence(
           originalInformantAddress,
-          data.informant.address as Record<string, string>
+          data.informant.address as Record<string, string>,
+          'st'
         ),
         date: data.informant.date,
       },
-
       preparedBy: data.preparedBy,
       hasAffidavitOfPaternity: data.hasAffidavitOfPaternity,
-      
-      
       affidavitOfPaternityDetails: {
         father: {
           name: data.affidavitOfPaternityDetails?.father?.name || ''
@@ -1029,7 +1036,7 @@ export function EditBirthCivilRegistryFormInline({
         adminOfficer: {
           nameInPrint: data.affidavitOfPaternityDetails?.adminOfficer?.nameInPrint || '',
           titleOrPosition: data.affidavitOfPaternityDetails?.adminOfficer?.titleOrPosition || '',
-          address:  mergeResidence(
+          address: mergeResidence(
             originalAdminOfficerAddress,
             data.affidavitOfPaternityDetails?.adminOfficer?.address as Record<string, string>
           ),
@@ -1040,14 +1047,12 @@ export function EditBirthCivilRegistryFormInline({
           placeIssued: data.affidavitOfPaternityDetails?.ctcInfo?.placeIssued || ''
         }
       },
-      
-
       isDelayedRegistration: data.isDelayedRegistration,
       affidavitOfDelayedRegistration: data.affidavitOfDelayedRegistration,
     };
-
+  
     console.log(JSON.stringify(updatedForm, null, 2));
-
+  
     try {
       const response = await fetch('/api/editForm/birth', {
         method: 'PUT',
@@ -1056,14 +1061,14 @@ export function EditBirthCivilRegistryFormInline({
         },
         body: JSON.stringify(updatedForm),
       });
-
+  
       const responseText = await response.text();
       const responseData = responseText ? JSON.parse(responseText) : {};
-
+  
       if (!response.ok) {
         throw new Error(responseData.error || 'Failed to update form');
       }
-
+  
       onCancel();
       toast.success(`${t('formUpdated')} ${updatedForm.id}!`);
     } catch (error) {
@@ -1073,6 +1078,7 @@ export function EditBirthCivilRegistryFormInline({
       setIsUpdating(false);
     }
   };
+  
 
   const { formMethods, handleError } = useBirthCertificateForm({
     onOpenChange: () => { },
