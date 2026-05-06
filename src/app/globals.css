@@ -23,10 +23,10 @@
   --border: 0 0% 90%;
   --input: 0 0% 89.8%;
   --ring: 0 0% 3.9%;
-  --chart-1: 225 80% 50%;
-  --chart-2: 222 78% 55%;
-  --chart-3: 220 76% 60%;
-  --chart-4: 218 74% 65%;
+  --chart-1: 5 86.4% 53.9%;
+  --chart-2: 211 66.8% 44.9%;
+  --chart-3: 347 66.8% 44.9%;
+  --chart-4: 6 90.2% 83.9%;
   --chart-5: 216 72% 70%;
   --radius: 0.5rem;
 
@@ -65,11 +65,10 @@
   --border: 0 0% 14.9%;
   --input: 0 0% 14.9%;
   --ring: 0 0% 83.1%;
-  --chart-1: 225 80% 50%;
-  --chart-2: 225 78% 54%;
-  --chart-3: 225 76% 58%;
-  --chart-4: 225 74% 62%;
-  --chart-5: 225 72% 66%;
+  --chart-1: 5 86.4% 53.9%;
+  --chart-2: 211 66.8% 44.9%;
+  --chart-3: 347 66.8% 44.9%;
+  --chart-4: 6 90.2% 83.9%;
 
   /* Sidebar colors, do not remove */
   --sidebar-background: 240 10% 12%;
@@ -111,8 +110,6 @@
     @apply hover:cursor-pointer;
   }
 }
-
-
 
 @layer base {
   * {

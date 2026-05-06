@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("PG_DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 /**
@@ -186,64 +187,64 @@ model BaseRegistryFormDocument {
 // MarriageCertificateForm (Form 97)
 // ------------------------------
 model MarriageCertificateForm {
-  id                          String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  baseFormId                  String?           @unique @db.Uuid
-  husbandFirstName            String
-  husbandMiddleName           String?
-  husbandLastName             String
-  husbandDateOfBirth          DateTime
-  husbandAge                  Int
-  husbandPlaceOfBirth         Json?
-  husbandSex                  Sex?
-  husbandCitizenship          String
-  husbandResidence            String
-  husbandReligion             String?
-  husbandCivilStatus          String
-  husbandFatherName           Json
-  husbandFatherCitizenship    String
-  husbandMotherMaidenName     Json
-  husbandMotherCitizenship    String
-  husbandConsentPerson        Json?
-  husbandContractParty        Json
+  id                       String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  baseFormId               String?  @unique @db.Uuid
+  husbandFirstName         String
+  husbandMiddleName        String?
+  husbandLastName          String
+  husbandDateOfBirth       DateTime
+  husbandAge               Int
+  husbandPlaceOfBirth      Json?
+  husbandSex               Sex?
+  husbandCitizenship       String
+  husbandResidence         String
+  husbandReligion          String?
+  husbandCivilStatus       String
+  husbandFatherName        Json
+  husbandFatherCitizenship String
+  husbandMotherMaidenName  Json
+  husbandMotherCitizenship String
+  husbandConsentPerson     Json?
+  husbandContractParty     Json
 
-  wifeFirstName               String
-  wifeMiddleName              String?
-  wifeLastName                String
-  wifeDateOfBirth             DateTime
-  wifeAge                     Int
-  wifePlaceOfBirth            Json
-  wifeSex                     Sex?
-  wifeCitizenship             String
-  wifeResidence               String
-  wifeReligion                String?
-  wifeCivilStatus             String
-  wifeFatherName              Json
-  wifeFatherCitizenship       String
-  wifeMotherMaidenName        Json
-  wifeMotherCitizenship       String
-  wifeConsentPerson           Json?
-  wifeContractParty           Json
+  wifeFirstName         String
+  wifeMiddleName        String?
+  wifeLastName          String
+  wifeDateOfBirth       DateTime
+  wifeAge               Int
+  wifePlaceOfBirth      Json
+  wifeSex               Sex?
+  wifeCitizenship       String
+  wifeResidence         String
+  wifeReligion          String?
+  wifeCivilStatus       String
+  wifeFatherName        Json
+  wifeFatherCitizenship String
+  wifeMotherMaidenName  Json
+  wifeMotherCitizenship String
+  wifeConsentPerson     Json?
+  wifeContractParty     Json
 
-  remarks                     String?
+  remarks String?
 
-  placeOfMarriage             Json
-  dateOfMarriage              DateTime
-  timeOfMarriage              DateTime            
-  contractDay                 DateTime
+  placeOfMarriage Json
+  dateOfMarriage  DateTime
+  timeOfMarriage  DateTime
+  contractDay     DateTime
 
-  marriageSettlement          Boolean           @default(false)
+  marriageSettlement     Boolean @default(false)
   // contractingPartiesSignature Json[]
-  marriageLicenseDetails      Json?
-  marriageArticle             Json?           
-  executiveOrderApplied       Boolean           @default(false)
-  solemnizingOfficer          Json
-  witnesses                   Json[]
+  marriageLicenseDetails Json?
+  marriageArticle        Json?
+  executiveOrderApplied  Boolean @default(false)
+  solemnizingOfficer     Json
+  witnesses              Json[]
 
-  registeredByOffice          Json?
+  registeredByOffice Json?
 
-  affidavitOfSolemnizingOfficer Json?
+  affidavitOfSolemnizingOfficer  Json?
   affidavitOfdelayedRegistration Json?
-  baseForm                    BaseRegistryForm? @relation(fields: [baseFormId], references: [id], onDelete: Cascade)
+  baseForm                       BaseRegistryForm? @relation(fields: [baseFormId], references: [id], onDelete: Cascade)
 
   @@index([husbandLastName, husbandFirstName])
   @@index([wifeLastName, wifeFirstName])
