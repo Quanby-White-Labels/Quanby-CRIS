@@ -185,7 +185,7 @@ export async function generateCertifiedCopy(data: CertifiedCopyData): Promise<Bu
         // Add the two logos to the PDF
         try {
             // Set default image paths if not provided
-            const logoPath = data.logoUrl || '/images/logo.png';
+            const logoPath = data.logoUrl || '/images/REGISTRY.png';
             const newLogoPath = data.newLogoUrl || '/images/new.png';
 
             // Left logo
